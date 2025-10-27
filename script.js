@@ -1,19 +1,11 @@
 function getComputerChoice () {
     const arrayStrings = ["rock", "paper", "scissors"];
     const randomizer = Math.floor(Math.random()*3);
-    if (randomizer === 0) {
-        return arrayStrings[0]
-    }
-    else if (randomizer === 1) {
-        return arrayStrings[1]
-    }
-    else {
-        return arrayStrings[2]
-    }
+    return arrayStrings[randomizer];
 }
 
 function getHumanChoice () {
-    const humanChoice = prompt("Rock, scissors or paper?").toLowerCase().trim();
+    const humanChoice = prompt("Rock, scissors or paper?") .toLowerCase().trim();
     return humanChoice;
 }
 
@@ -21,7 +13,8 @@ let humanScore = 0;
 let computerScore = 0;
 
 function playRound(humanChoice, computerChoice) {
-    let result;
+    let result = "";
+    
     switch (humanChoice) {
         case "rock":
             if (computerChoice === "scissors") {
@@ -66,13 +59,37 @@ function playRound(humanChoice, computerChoice) {
     return result;
 }
 
+const paperButton = document.createElement('button');
+const rockButton = document.createElement('button');
+const scissorsButton = document.createElement('button');
+
+paperButton.textContent = "Paper";
+rockButton.textContent = "Rock";
+scissorsButton.textContent = "Scissors";
+
+document.body.appendChild(rockButton);
+document.body.appendChild(paperButton);
+document.body.appendChild(scissorsButton);
+
+rockButton.addEventListener("click", () => {
+    playRound("rock", getHumanChoice());
+});
+paperButton.addEventListener("click", () => {
+    playRound("paper", getHumanChoice());
+});
+scissorsButton.addEventListener("click", () => {
+    playRound("scissors", getHumanChoice());
+});
+
+const resultDisplay = document.createElement('div');
+document.body.appendChild(resultsDiv);
 
 
 
-function playGame() {
-    for (let i=1; i<=5; i++) {              
-        const humanSelection = getHumanChoice();
-        const computerSelection = getComputerChoice();
-        playRound(humanSelection, computerSelection);
-    }
-}
+//function playGame() {
+   // for (let i=1; i<=5; i++) {              
+   //     const humanSelection = getHumanChoice();
+      //  const computerSelection = getComputerChoice();
+        //playRound(humanSelection, computerSelection);
+   // }
+//}
