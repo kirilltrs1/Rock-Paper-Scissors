@@ -4,9 +4,8 @@ function getComputerChoice () {
     return arrayStrings[randomizer];
 }
 
-function getHumanChoice () {
-    const humanChoice = prompt("Rock, scissors or paper?") .toLowerCase().trim();
-    return humanChoice;
+function getHumanChoice (choice) {
+    return choice.toLowerCase();
 }
 
 let humanScore = 0;
@@ -72,24 +71,71 @@ document.body.appendChild(paperButton);
 document.body.appendChild(scissorsButton);
 
 rockButton.addEventListener("click", () => {
-    playRound("rock", getHumanChoice());
+  const result = playRound("rock", getComputerChoice());
+  updateDisplay(result);
 });
+
 paperButton.addEventListener("click", () => {
-    playRound("paper", getHumanChoice());
+  const result = playRound("paper", getComputerChoice());
+  updateDisplay(result);
 });
+
 scissorsButton.addEventListener("click", () => {
-    playRound("scissors", getHumanChoice());
+  const result = playRound("scissors", getComputerChoice());
+  updateDisplay(result);
 });
 
-const resultDisplay = document.createElement('div');
-document.body.appendChild(resultsDiv);
+const displayResult = document.createElement('div');
+displayResult.style.marginTop = "20px";
+displayResult.style.fontSize = "20px";
+document.body.appendChild(displayResult);
+
+const scoreBoard = document.createElement("div");
+scoreBoard.style.marginTop = "10px";
+scoreBoard.style.fontSize = "20px";
+document.body.appendChild(scoreBoard);
+
+function updateDisplay(resultText) {
+  displayResult.textContent = resultText;
+  scoreBoard.textContent = `Player: ${humanScore} | Computer: ${computerScore}`;
+  if (humanScore === 5) {
+    displayResult.textContent = 'You are the winner!';
+    disableButtons(true);
+    gameRestart()
+  }
+  else if (computerScore === 5) {
+    displayResult.textContent = 'You lost';
+    disableButtons(true);
+    gameRestart()
+  }
+}
+
+function disableButtons(state) {
+  rockButton.disabled = state;
+  paperButton.disabled = state;
+  scissorsButton.disabled = state;
+}
 
 
+const restartGame = document.createElement('button');
+restartGame.textContent = "Restart game";
+restartGame.style.display = "none";
+restartGame.style.marginTop = "20px";
+restartGame.style.padding = "10px 20px";
+restartGame.style.fontSize = "16px";
+document.body.appendChild(restartGame);
 
-//function playGame() {
-   // for (let i=1; i<=5; i++) {              
-   //     const humanSelection = getHumanChoice();
-      //  const computerSelection = getComputerChoice();
-        //playRound(humanSelection, computerSelection);
-   // }
-//}
+function gameRestart() {
+    if (humanScore === 5 || computerScore === 5) {
+        restartGame.style.display = "block";
+    }
+}
+
+restartGame.addEventListener("click", () => {
+  humanScore = 0;
+  computerScore = 0;
+  displayResult.textContent = "New match started!";
+  scoreBoard.textContent = `Player: ${humanScore} | Computer: ${computerScore}`;
+  restartGame.style.display = "none";
+  disableButtons(false);
+});
